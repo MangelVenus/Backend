@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Backend.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -7,6 +8,13 @@ namespace Backend.Controllers
     [ApiController]
     public class PeopleController : ControllerBase
     {
+        private IPeopleService _peopleService;
+
+        public PeopleController()
+        {
+            _peopleService = new PeopleService();
+        }
+
         [HttpGet("all")]
         public List<People> GetPeople() => Repository.People;
 
@@ -26,9 +34,10 @@ namespace Backend.Controllers
         public List<People> Get(string search) =>
             Repository.People.Where(p => p.Name.ToUpper().Contains(search.ToUpper())).ToList();
 
+        [HttpPost]
         public IActionResult Add(People people)
         {
-            if (string.IsNullOrEmpty(people.Name))
+            if (!_peopleService.Validate(people))
             {
                 return BadRequest();
             }
