@@ -9,7 +9,7 @@ namespace Backend.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int BeerID { get; set; }
 
-        public int Name { get; set; }
+        public string Name { get; set; }
 
         public int BrandID { get; set; }
 
